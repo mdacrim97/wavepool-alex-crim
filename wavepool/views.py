@@ -1,5 +1,6 @@
 from django.template import loader
 from django.http import HttpResponse
+from django.views import generic
 
 from wavepool.models import NewsPost
 from wavepool.code_exercise_defs import code_exercise_defs, code_review_defs, code_design_defs
@@ -28,14 +29,9 @@ def front_page(request):
     return HttpResponse(template.render(context, request))
 
 
-def newspost_detail(request, newspost_id=None):
-    template = loader.get_template('wavepool/newspost.html')
-    newspost = NewsPost.objects.order_by('?').first()
-    context = {
-        'newspost': newspost
-    }
-
-    return HttpResponse(template.render(context, request))
+class NewspostDetail(generic.DetailView):
+    model = NewsPost
+    template_name = 'wavepool/newspost.html'
 
 
 def instructions(request):

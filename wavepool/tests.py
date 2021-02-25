@@ -38,7 +38,7 @@ class NewsPostDetail(TestBase):
         """
         newsposts = NewsPost.objects.all()
         for newspost in newsposts:
-            expected_title_tag_text = '{} | Wavepool | Industry Dive'.format(newspost.title)
+            expected_title_tag_text = "{} | Wavepool | Industry Dive".format(newspost.title)
             page = self.client.get(newspost.url)
             page_html = BeautifulSoup(page.content, 'html.parser')
             title_tag_text = page_html.title.text
