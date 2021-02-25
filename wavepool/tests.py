@@ -38,7 +38,7 @@ class NewsPostDetail(TestBase):
         """
         newsposts = NewsPost.objects.all()
         for newspost in newsposts:
-            expected_title_tag_text = '{} | Wavepool | Industry Dive'.format(newspost.title)
+            expected_title_tag_text = "{} | Wavepool | Industry Dive".format(newspost.title)
             page = self.client.get(newspost.url)
             page_html = BeautifulSoup(page.content, 'html.parser')
             title_tag_text = page_html.title.text
@@ -227,7 +227,7 @@ class CmsPage(TestBase):
             obj_id = resolved_admin_url.kwargs['object_id']
             newspost = NewsPost.objects.get(pk=obj_id)
             if last_pubdate:
-                self.assertTrue(newspost.publish_date >= last_pubdate)
+                self.assertTrue(newspost.publish_date <= last_pubdate)
             last_pubdate = newspost.publish_date
 
     def test_only_one_cover_story(self):

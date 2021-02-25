@@ -1,5 +1,6 @@
 from django.template import loader
 from django.http import HttpResponse
+from django.views import generic
 
 from wavepool.models import NewsPost
 from wavepool.code_exercise_defs import code_exercise_defs, code_review_defs, code_design_defs
@@ -13,10 +14,11 @@ def front_page(request):
             top_stories: the 3 most recent newsposts that are not cover story
             archive: the rest of the newsposts, sorted by most recent
     """
+    #simply order by publish_date and then strip from 4th entry to the end
     template = loader.get_template('wavepool/frontpage.html')
-    cover_story = NewsPost.objects.all().order_by('?').first()
-    top_stories = NewsPost.objects.all().order_by('?')[:3]
-    other_stories = NewsPost.objects.all().order_by('?')
+    cover_story = NewsPost.objects.all().order_by('-publish_date').first()
+    top_stories = NewsPost.objects.all().order_by('-publish_date')[:3]
+    other_stories = NewsPost.objects.all().order_by('-publish_date')[4:]
 
     context = {
         'cover_story': cover_story,
@@ -27,14 +29,9 @@ def front_page(request):
     return HttpResponse(template.render(context, request))
 
 
-def newspost_detail(request, newspost_id=None):
-    template = loader.get_template('wavepool/newspost.html')
-    newspost = NewsPost.objects.order_by('?').first()
-    context = {
-        'newspost': newspost
-    }
-
-    return HttpResponse(template.render(context, request))
+class NewspostDetail(generic.DetailView):
+    model = NewsPost
+    template_name = 'wavepool/newspost.html'
 
 
 def instructions(request):
