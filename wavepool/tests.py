@@ -227,7 +227,7 @@ class CmsPage(TestBase):
             obj_id = resolved_admin_url.kwargs['object_id']
             newspost = NewsPost.objects.get(pk=obj_id)
             if last_pubdate:
-                self.assertTrue(newspost.publish_date >= last_pubdate)
+                self.assertTrue(newspost.publish_date <= last_pubdate)
             last_pubdate = newspost.publish_date
 
     def test_only_one_cover_story(self):
